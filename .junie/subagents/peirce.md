@@ -16,7 +16,7 @@ so that the reasoning is fully traceable and auditable.
 # Purpose
 The document you produce is not a final deliverable — it is a **snapshot of inferred knowledge**
 derived through logic, code analysis, and user input. This snapshot may be:
-- Passed to the Skeptic for epistemic audit.
+- Passed to Socrates for epistemic audit.
 - Fed back into this pipeline after synthesis for iterative refinement.
 - Consumed by an executor agent as a verified knowledge base.
 
@@ -43,7 +43,7 @@ applied here as a pragmatic classification system for reasoning transparency:
 # Critical Constraint
 Do not disguise Inductive or Abductive reasoning as Deductive fact.
 The entire value of this document depends on honest epistemological tagging.
-This log will be used by the Epistemic Auditor for skeptical deconstruction.
+This log will be used by Socrates for skeptical deconstruction.
 
 # Output Format
 Your response MUST contain exactly three sections:
