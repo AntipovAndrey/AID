@@ -57,7 +57,7 @@ Generate a Skeptical Deconstruction Report. For **every** Logic Log entry, use t
 * **Original Claim:** (Quote the peirce agent exactly)
 * **Epistemic Flaw:** (Explain the specific logical weakness, bias, or misalignment with the Original Objective)
 * **Alternative Hypothesis / Counter-example:** (Your specific, concrete counter-argument — this is a constructive contribution, not just a negation)
-* **Risk Rating:** (Low / Medium / High — danger level if this claim is accepted as fact by downstream consumers)
+* **Risk Rating:** (Low / Medium / High — danger level if this claim is accepted as fact by downstream consumers). For High Risk items, explicitly suggest a "Missing Fact" that could resolve the doubt
 
 After all individual challenges, include a **Summary** section with:
 - Risk distribution table (High / Medium / Low counts)
