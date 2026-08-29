@@ -8,6 +8,9 @@ output format.
 
 The current agents form a three-stage workflow for producing a non-code
 deliverable whose important claims are traceable, challenged, and resolved.
+Together, they produce a more trustworthy document than a bare agent typically
+would: the workflow forces deeper research and prevents early mistakes from
+becoming assumptions that silently support later conclusions.
 They should be run in the following order:
 
 1. **Peirce — Analyst** ([`subagents/peirce.md`](subagents/peirce.md))
