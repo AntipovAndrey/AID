@@ -7,6 +7,11 @@
 4. Report what happened, render at the caller
 5. Do not report broader error type than the producer actually produces. (Exception: multiple impls of the same interface)
 
+
+## Designing a Sealed type
+#### The goal is to forbid the impossible, when possible
+1. TODO
+
 ## Designing a Use-case / Pipeline
 #### Which might carry a different name in the project; might be spread across more than one file
 #### Use-case is a pipeline that executes scenario (possibly alternating): `Request => Result`, 
@@ -21,3 +26,12 @@
 7. Give a named home to a `Step` that appears in multiple places.
 8. Render at the end of the pipeline.
 9. Do not construct the pipeline's `Result` in a `Step`, even for an early-exit.
+
+
+# Code-style: functions
+
+1. Add names for call arguments when they differ from the parameter name
+2. Do not mix named and positional arguments in the same function call
+3. Put arguments on separate lines when you have 4+ arguments
+4. Put arguments on separate lines when they can not fit the accepted width 
+5. Use named arguments when arguments are put on separate lines 
