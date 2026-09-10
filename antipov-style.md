@@ -7,10 +7,13 @@
 4. Report what happened, render at the caller
 5. Do not report broader error type than the producer actually produces. (Exception: multiple impls of the same interface)
 
-
 ## Designing a Sealed type
-#### The goal is to forbid the impossible, when possible
-1. TODO
+#### The goal is to forbid the impossible (when possible)
+#### Action.Performed / Action.Failed.MissingData
+#### Result.Data / Result.Fail.NetworkError
+
+1. Always nest the hierarchy
+2. Do not import the members on the call-sites: the name of the target type is the full name starting from the beginning of the hierarchy
 
 ## Designing a Use-case / Pipeline
 #### Which might carry a different name in the project; might be spread across more than one file
@@ -35,3 +38,20 @@
 3. Put arguments on separate lines when you have 4+ arguments
 4. Put arguments on separate lines when they can not fit the accepted width 
 5. Use named arguments when arguments are put on separate lines 
+6. Move out subject from 'when' if it requires to call a function with parameters on separate lines
+7. Do not accept a nullable argument only to return early if its null
+
+## Code-style: Interfaces
+
+1. (!) Lean to declare the nested Request/Response-like types directly above the method that owns them
+2. (!) Exception - `(void)=>A`, when `A` is 'complex'/'long'; also when it is not `void`, but also a simple type
+3. 
+
+## Designing Hex
+
+1. DI annotations can appear on any level
+
+## Smells
+
+1. Interface that defines an operation where `Request` type is a sealed hierarchy while that type is owned by that operation; use overrides instead 
+2. Extension functions that map to the types of other layers; this is a hidden dependency; find it a home
