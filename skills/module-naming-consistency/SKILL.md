@@ -5,8 +5,9 @@ description: >-
   and framework entry points through declared interfaces and actual implementations
   to the module boundary. Produce one Markdown document containing the complete
   call trace, evidence-based naming problems, and an actionable refactoring brief
-  with measurable acceptance criteria. Use for naming, responsibility, and semantic
-  clarity reviews, not for implementing the refactoring or running the application.
+  with measurable acceptance criteria. Use for naming, responsibility, type ownership
+  and nesting, and semantic clarity reviews, not for implementing the refactoring
+  or running the application.
 ---
 
 # Module Naming Consistency
@@ -74,6 +75,11 @@ Build numbered inventories directly from the scoped sources before tracing:
 - `C`: every contract operation for the clarity review: public APIs, internal
   application contracts, dependency ports, and equivalent concrete entry points
   where no interface exists. Do not exclude an operation because it lacks an interface.
+- `T`: every handwritten data/value type passed between components, plus private
+  result/projection types. Include both standalone and already nested types; identify
+  producer methods, consumer signatures, and the semantic owner independently of
+  current file placement. Inspect boundary consumers' declarations without tracing
+  their bodies outside the module.
 
 Exclude compiler-generated boilerplate, trivial field access, and routine pure
 standard-library operations explicitly and consistently. Never exclude meaningful
@@ -177,6 +183,47 @@ Distinguish confirmed defects, supported naming risks, hypotheses, and optional
 style preferences. Do not inflate counts with duplicates or invent runtime failures
 from static evidence. Track unrelated behavioral bugs separately within the report.
 
+### Producer-owned types and nesting
+
+A type's placement should reveal whose contract it represents, including when
+consumers pass it further down the call chain. Audit ownership, not just spelling.
+
+- If a type is a producer-specific result with one semantic producer and no
+  independent domain meaning, default to nesting it under that owner. Keeping it
+  standalone requires a concrete, source-backed justification.
+- Count semantic producers, not constructor call sites. Helpers, mappers, tests,
+  and multiple implementations of one contract do not create additional owners.
+  Conversely, a shared domain entity does not belong to a factory just because
+  only that factory currently constructs it.
+- Many consumers or forwarding components do not imply many owners. Distinguish
+  passing a value along from producing a separately meaningful representation.
+- Prefer the producing interface or public abstraction when one exists, not its
+  implementation. Use `InstallationLookup.Summary`, not
+  `InstallationLookupImpl.Summary`, for a lookup contract's projection. A private
+  implementation detail may belong to its concrete producer.
+- Preserve the owner qualification in consumer signatures and cross-component
+  type references: `InstallationLookup.Summary`, not an imported bare `Summary`
+  or an alias hiding the owner. Nesting without visible ownership misses the goal.
+- Do not expose persistence/transport implementation types through higher-level
+  public contracts to satisfy nesting. Choose the appropriate contract owner or
+  map the producer-specific representation at the boundary. Truly independent
+  domain models remain standalone; do not manufacture an owner for every type.
+- Record actual language, framework, serialization, or dependency constraints as
+  explicit exceptions with evidence. Follow local rules; for languages without
+  nested types, use their supported owner-qualified equivalent. In Kotlin use a
+  normal nested type, not `inner`; lexical ownership does not prove runtime provenance.
+
+For every type in `T`, include a row in the same report:
+
+`type ID | type | producer methods | consumer signatures | semantic owner |
+current placement/qualification | proposed nested/standalone placement |
+justification or exception | source evidence`
+
+Classify ownership as confirmed or unresolved; do not count an unresolved row as
+covered. Check existing nested types for the wrong owner as well as standalone
+types missing an owner. Neither "used by many consumers" nor "might be reused
+later" justifies a standalone producer-specific result.
+
 ## 5. Prepare an executable refactoring brief, not the refactoring
 
 Derive one recommended target design from the findings. Do not hand the next agent
@@ -187,6 +234,8 @@ a thesaurus or a blanket instruction to "improve naming". Include:
 2. A mapping for every old contract/entry point: `old -> new / kept / removed`, exact
    target signatures, implementation/owner, affected callers and DI, and justification.
    Expose splits/merges. Require evidence before deleting apparently unused methods.
+   For type-placement findings, also map old type -> target owner-qualified type,
+   including kept/removed types, consumer signatures/imports, and justified exceptions.
 3. Target call trees in the same interface/implementation notation, clearly labeled
    `PROPOSED`, with enough detail to explain each corrected promise and responsibility.
 4. Ordered, bounded tasks tied to finding IDs and affected files. Separate mechanical
@@ -196,6 +245,9 @@ a thesaurus or a blanket instruction to "improve naming". Include:
    persistence/configuration names, identities, authorization, ordering, concurrency,
    retry/idempotency, error semantics, and secret handling, as applicable. Flag changes
    requiring approval or a migration rather than silently promising compatibility.
+   For nesting/moves, check source and binary compatibility, serialization names,
+   and query constructor references where applicable; lexical moves are not
+   automatically behavior-neutral.
 6. A focused verification matrix: affected scenario/invariant, existing or needed
    test, negative/concurrent cases where relevant, expected result, and acceptance ID.
    Identify commands from the actual project, or mark unknowns. Require the future
@@ -226,12 +278,22 @@ and map all old contracts so removal cannot hide an unresolved problem.
 | SemanticSurprises | Operation rows where the promised subject/action/effects/timing/result contradict actual behavior | 0 |
 | UnfinishedCapabilities | Contracts whose type plus signatures still fail to identify a bounded capability; protocol-only ports and generic suffixes do not qualify | 0 |
 | VocabularyConflicts | Unresolved conflicting meanings/synonyms within the agreed glossary | 0 |
+| TypeOwnershipCoverage | Types with evidenced producers, consumers, semantic owner or independent domain role, and justified placement / all `T` | 100% |
+| UnjustifiedStandaloneTypes | Single-owner producer-specific results left standalone without a concrete justification | 0 |
+| TypeOwnershipBoundaryViolations | Type placements that make consumers depend on an implementation instead of its contract or violate agreed layer boundaries | 0 |
+| HiddenTypeOwnerUsages | Consumer signatures or cross-component type references that hide a nested type's owner through bare imports or aliases, without an evidenced exception | 0 |
 | ContractClarity | Correct independent predictions / (4 x all operations in `C`) | At least 95%; critical operations 100% |
 
 Count each item once and list its ID, not just a score. Derive denominators from
 sources independently of the trace. An unresolved edge is not resolved coverage;
 uncertain reachability stays explicit even if its method body has been inspected.
 Report an empty denominator as `N/A` with evidence, never silently as 100%.
+
+After refactoring, rebuild `T` and its ownership table from actual declarations,
+producer methods, and consumer signatures/imports. Reconcile each old type with
+its new location, retained standalone role, or justified removal; record violations
+before/after and revalidate every exception. Do not use the proposed placement table
+or the percentage of nested classes as evidence that ownership became clear.
 
 For `ContractClarity`, use a reviewer who has not participated in the audit/design
 or implementation. Before revealing bodies, trace, comments, glossary, or target
@@ -276,14 +338,16 @@ critique, plan, and acceptance files:
 
 1. Scope, version/hash manifest, exclusions, audit status, and concise verdict.
 2. Numbered inventories, binding evidence, and coverage ledger.
-3. Complete as-is call trees, shared subtrees, non-root methods, and effect table.
+3. Complete as-is call trees, shared subtrees, non-root methods, effect table, and
+   type ownership/placement table with producer and consumer evidence.
 4. Prioritized findings with IDs and evidence; uncertainties and unrelated bugs apart.
 5. Refactoring brief: glossary, mappings, owners, proposed trees, ordered tasks,
    compatibility limits, knowledge updates, and verification matrix.
 6. Acceptance protocol, measured baseline, unfilled after ledger, and blockers.
 7. A reserved post-refactoring section for the future agent's final source manifest,
-   rebuilt trace, mapping closure, independent predictions, actual commands/results,
-   metric deltas, remaining exceptions, and final verdict. Preserve the baseline.
+   rebuilt trace and type ownership table, mapping closure, independent predictions,
+   actual commands/results, metric deltas, remaining exceptions, and final verdict.
+   Preserve the baseline.
 
 Before delivering, check source references, inventory/trace reconciliation, every
 subtree link, explicit stop boundaries, interface/implementation visibility, all
