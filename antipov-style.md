@@ -1,3 +1,8 @@
+## Common
+
+1. Nest classes to their producers
+2. Nest classes to their aggregates, e.g. 'User.Address.ZipCode'
+
 ## Designing an Interface
 #### Use-cases / services / ports
 
@@ -40,10 +45,12 @@
 5. Use named arguments when arguments are put on separate lines 
 6. Move out subject from 'when' if it requires to call a function with parameters on separate lines
 7. Do not accept a nullable argument only to return early if its null
+8. Use verb in function names
+9. Call mapping functions like 'to<Type>'
 
 ## Code-style: Interfaces
 
-1. (!) Lean to declare the nested Request/Response-like types directly above the method that owns them
+1. (?) (!) Lean to declare the nested Request/Response-like types directly above the method that owns them
 2. (!) Exception - `(void)=>A`, when `A` is 'complex'/'long'; also when it is not `void`, but also a simple type
 3. 
 
@@ -55,3 +62,5 @@
 
 1. Interface that defines an operation where `Request` type is a sealed hierarchy while that type is owned by that operation; use overrides instead 
 2. Extension functions that map to the types of other layers; this is a hidden dependency; find it a home
+
+
