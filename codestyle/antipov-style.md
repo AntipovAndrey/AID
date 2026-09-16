@@ -45,14 +45,15 @@
 5. Use named arguments when arguments are put on separate lines 
 6. Move out subject from 'when' if it requires to call a function with parameters on separate lines
 7. Do not accept a nullable argument only to return early if its null
-8. Use verb in function names
-9. Call mapping functions like 'to<Type>'
+8. Start function names with a verb, not the subject: avoid subject-first names like `slackGrantsOAuthInstallation`.
+9. Name functions for how they read at the call-site, not merely for what they do. Read the name together with the receiver and arguments; balance call-site readability with an accurate description of the implementation.
+10. Call mapping functions like 'to<Type>'
 
 ## Code-style: Interfaces
 
-1. (?) (!) Lean to declare the nested Request/Response-like types directly above the method that owns them
-2. (!) Exception - `(void)=>A`, when `A` is 'complex'/'long'; also when it is not `void`, but also a simple type
-3. 
+(? - Questionable)
+1. (?) Lean to declare the nested Request/Response-like types directly above the method that owns them
+2. (?) Exception - `(void)=>A`, when `A` is 'complex'/'long'; also when it is not `void`, but also a simple type
 
 ## Designing Hex
 
