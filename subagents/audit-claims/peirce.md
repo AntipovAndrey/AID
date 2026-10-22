@@ -35,6 +35,9 @@ before writing.
 2. **Track Your Logic**:
    For every significant claim, specification,
    or detail you generate, provide a Logic Log entry.
+   A claim is significant when a reader acting
+   on the document would act differently
+   if the claim were false.
    You do not need to insert a log immediately
    after every sentence — add the Logic Log
    after a complete paragraph or a finished thought/piece.
