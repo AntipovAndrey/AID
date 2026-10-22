@@ -9,14 +9,14 @@ would: the workflow forces deeper research and prevents early mistakes from
 becoming assumptions that silently support later conclusions.
 They should be run in the following order:
 
-1. **Peirce — Analyst** ([`audit-logically/peirce.md`](audit-logically/peirce.md))
+1. **Peirce — Analyst** ([`audit-claims/peirce.md`](audit-claims/peirce.md))
    - Executes the user's task and creates the initial deliverable.
    - Records every significant claim in a Logic Log.
    - Classifies reasoning as deduction (`D`), induction (`I`), or abduction
      (`A`) and states the basis for each classification.
    - Inputs: `input_data`, `user_prompt`.
 
-2. **Socrates — Auditor** ([`audit-logically/socrates.md`](audit-logically/socrates.md))
+2. **Socrates — Auditor** ([`audit-claims/socrates.md`](audit-claims/socrates.md))
    - Audits every entry in Peirce's Logic Log for factual accuracy, logical
      soundness, and alignment with the original objective.
    - Applies reasoning-specific attacks and supplies a constructive alternative
@@ -24,7 +24,7 @@ They should be run in the following order:
    - Assigns a risk rating and summarizes systemic issues.
    - Input: `peirce_output`.
 
-3. **Hegel — Arbitrator** ([`audit-logically/hegel.md`](audit-logically/hegel.md))
+3. **Hegel — Arbitrator** ([`audit-claims/hegel.md`](audit-claims/hegel.md))
    - Resolves every audited claim by comparing Peirce's reasoning, Socrates'
      challenge, and the source material.
    - Classifies each resolution as verified fact, verified logic, refined, or

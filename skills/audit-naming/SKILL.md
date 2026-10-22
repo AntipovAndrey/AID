@@ -1,5 +1,5 @@
 ---
-name: module-naming-consistency
+name: audit-naming
 description: >-
   Audit naming and contract consistency within a module by statically tracing API
   and framework entry points through declared interfaces and actual implementations
@@ -358,13 +358,13 @@ verification gaps, not replace the full report with a short opinion.
 
 ## Invocation and portability
 
-Example request: "Use module-naming-consistency to review `<module-path>`. Trace
+Example request: "Use audit-naming to review `<module-path>`. Trace
 every API and framework entry point to the module boundary. Save the trace,
 critique, and refactoring assignment with acceptance criteria in `<report-path>`.
 Do not run code or implement the refactoring."
 
 Keep this self-contained file at
-`.junie/skills/module-naming-consistency/SKILL.md` in the project available to the
+`.junie/skills/audit-naming/SKILL.md` in the project available to the
 agent. The workflow does not depend on CLI-, gateway-, or IDE-specific tools. If
 automatic discovery is unavailable, explicitly ask the agent to read this file and
 follow it. A remote checkout needs its own accessible copy; a local, untracked

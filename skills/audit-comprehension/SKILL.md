@@ -1,5 +1,5 @@
 ---
-name: incremental-comprehension-audit
+name: audit-comprehension
 description: >-
   Test how a text is understood while it is being read: feed growing prefixes of
   one clause at a time to a fresh reader for each prefix, record what that reader
