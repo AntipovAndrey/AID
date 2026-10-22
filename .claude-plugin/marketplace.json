@@ -1,0 +1,11 @@
+{
+  "name": "aid",
+  "owner": { "name": "Andrey Antipov", "url": "https://github.com/AntipovAndrey" },
+  "plugins": [
+    {
+      "name": "aid",
+      "source": "./",
+      "description": "Skills and subagents for auditing documents, code structure, and agent-authored branches."
+    }
+  ]
+}

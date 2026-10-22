@@ -1,0 +1,14 @@
+{
+  "name": "aid",
+  "description": "Skills and subagents for auditing documents, code structure, and agent-authored branches: incremental comprehension audit, module naming and decomposition analysis, feature research to spec, logic audit (Peirce, Socrates, Hegel), branch slop detection (Plato).",
+  "author": { "name": "Andrey Antipov", "url": "https://github.com/AntipovAndrey" },
+  "homepage": "https://github.com/AntipovAndrey/AID",
+  "repository": "https://github.com/AntipovAndrey/AID",
+  "keywords": ["skills", "subagents", "audit", "architecture", "documentation", "code-review"],
+  "agents": [
+    "./subagents/audit-claims/peirce.md",
+    "./subagents/audit-claims/socrates.md",
+    "./subagents/audit-claims/hegel.md",
+    "./subagents/plato.md"
+  ]
+}
